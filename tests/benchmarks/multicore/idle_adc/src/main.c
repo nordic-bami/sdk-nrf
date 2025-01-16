@@ -28,6 +28,7 @@ DT_FOREACH_CHILD_SEP(ADC_NODE, ADC_CHANNEL_CFG_DT, (,))};
 int main(void)
 {
 	int err;
+	int test_repetitions = 3;
 	uint16_t channel_reading[5];
 	int16_t sample_value;
 
@@ -51,7 +52,13 @@ int main(void)
 	err = adc_setup();
 	__ASSERT_NO_MSG(err == 0);
 
-	while (1) {
+#if defined(CONFIG_COVERAGE)
+	printk("Coverage analysis enabled\n");
+	while (test_repetitions--)
+#else
+	while (test_repetitions)
+#endif
+	{
 		gpio_pin_set_dt(&gpio, 1);
 		err = adc_read(adc, &sequence);
 		sample_value = channel_reading[0];
@@ -63,5 +70,7 @@ int main(void)
 		__ASSERT_NO_MSG(sample_value == ADC_LOW_LEVEL);
 		k_sleep(K_SECONDS(1));
 	}
+
+	printk("Coverage analysis start\n");
 	return 0;
 }
