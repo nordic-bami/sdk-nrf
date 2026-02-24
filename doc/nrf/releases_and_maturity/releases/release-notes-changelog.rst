@@ -687,6 +687,8 @@ Multiprotocol Service Layer libraries
 Libraries for networking
 ------------------------
 
+* The FTP client library has been moved to the Zephyr repository (see :ref:`zephyr:ftp_client_interface`).
+
 * :ref:`lib_nrf_cloud` library:
 
   * Added:
